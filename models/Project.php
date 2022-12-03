@@ -60,8 +60,8 @@ class Project extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'urlname' => 'Urlname',
+            'name' => 'Название',
+            'urlname' => 'Название URL',
             'short_description' => 'Short Description',
             'description' => 'Description',
             'category_id' => 'Category ID',

@@ -73,10 +73,9 @@ AppAsset::register($this);
     </div>
 </main>
 
-<footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-left">&copy; My Company <?= date('Y') ?></p>
-        <p class="float-right"><?= Yii::powered() ?></p>
+<footer class="footer mt-auto py-3">
+    <div class="footer-copyrights container">
+        <p class="float-left text-muted">&copy;<?= date('Y') ?> SourceHub. All Rights Reserved</p>
     </div>
 </footer>
 
