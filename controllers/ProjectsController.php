@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\Project;
 use yii\web\Controller;
 
 class ProjectsController extends Controller
 {
     public function actionView($urlname)
     {
-        return $this->render('view', []);
+        $model = Project::findOne(['id' => 1]);
+        return $this->render('view', [
+            'model' => $model
+        ]);
     }
 }
