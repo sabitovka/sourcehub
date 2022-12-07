@@ -5,6 +5,7 @@
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /** @var app\models\Project $projects */
 /** @var app\models\Category $categories */
@@ -60,7 +61,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Каталог'];
                             <div><?= $project['short_description'] ?></div>
                         </div>
                     </div>
-                    <button class="btn btn-primary ms-auto px-3 py-2">Подробнее</button>
+                    <button class="btn btn-primary ms-auto">
+                        <?= Html::a('Подробнее', Url::to(
+                                ['projects/view', 'u' => $project['urlname']]),
+                                ['class' => 'text-decoration-none text-reset px-3 py-2']
+                            )
+                        ?>
+                    </button>
                     <div class="border-bottom mt-2"></div>
                 </div>
             <?php } ?>
