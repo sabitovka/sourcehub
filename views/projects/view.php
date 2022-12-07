@@ -19,22 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="card text-center my-3">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="true" href="#">Общее</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Файлы</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Комментарии</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Настройка</a>
-                </li>
-            </ul>   
-        </div>
+        <?= $this->render('_tab-header', [
+            'activeTab' => 'view',
+            'model' => $model,
+        ]) ?>
 
         <div class="card-body text-start px-3">
             <div class="fs-5 fw-bolder">Платформа: <span class="link-primary"><?= $model->platform->name ?></span></div>
