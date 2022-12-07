@@ -20,12 +20,9 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
-    <?php $this->registerJs(
-        '$(".logo").each(function() { let span = $(this); span.html(span.html().replace("hub", "<span>hub</span>"))})',
-        View::POS_READY
-    )?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -80,6 +77,7 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<?= Html::script('$(".logo").each(function() { let span = $(this); span.html(span.html().replace("hub", "<span>hub</span>"))})') ?>
 </body>
 </html>
 <?php $this->endPage() ?>
