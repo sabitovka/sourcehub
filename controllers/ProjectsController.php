@@ -55,4 +55,16 @@ class ProjectsController extends Controller
             'action' => $action
         ]);
     }
+
+    public function actionFiles($u) {
+        $model = Project::findOne(['urlname' => $u]);
+
+        return $this->render('files', ['model' => $model]);
+    }
+
+    public function actionComments($u) {
+        $model = Project::findOne(['urlname' => $u]);
+
+        return $this->render('comments', ['model' => $model]);
+    }
 }
