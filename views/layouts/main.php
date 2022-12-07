@@ -39,9 +39,13 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
-            ['label' => 'Лицензии', 'url' => ['/license/index']],
-            ['label' => 'Платформы', 'url' => ['/platform/index']],
-            ['label' => 'Категории', 'url' => ['/category/index']],
+            ['label' => 'Каталог', 'url' => ['/catalog']],
+            ['label' => 'Создать', 'url' => ['/projects/create']],
+            ['label' => 'Справочники', 'items' => [
+                ['label' => 'Лицензии', 'url' => ['/license/index']],
+                ['label' => 'Платформы', 'url' => ['/platform/index']],
+                ['label' => 'Категории', 'url' => ['/category/index']],
+            ]],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Войти', 'url' => ['/site/login']]
             ) : (
