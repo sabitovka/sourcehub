@@ -55,7 +55,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Каталог'];
             <?php foreach($projects as $project) { ?>
                 <div class="mt-2 d-flex flex-column">
                     <div class="d-flex">
-                        <img src="" alt="" width="100" height="100">
+                        <?=
+                            Html::img(
+                                '@web/upload/projects/'.$project['urlname'].'/logo.png',
+                                [
+                                    'alt' => $project['urlname'],
+                                    'class' => 'img-responsive',
+                                    'width' => 100,
+                                    'height' => 100
+                                ]
+                            );
+                        ?>
                         <div class="ms-2">
                             <h5><?= $project['name'] ?></h5>
                             <div><?= $project['short_description'] ?></div>
