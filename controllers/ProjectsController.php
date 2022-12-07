@@ -36,19 +36,23 @@ class ProjectsController extends Controller
         return $this->render('create', ['model' => $model]);
     }
 
-    public function actionSettings($u) {
+    public function actionSettings($u, $action = 'index') {
         $model = Project::findOne(['urlname' => $u]);
         $licenses = License::find()->all();
         $licenseItems = ArrayHelper::map($licenses, 'id', 'name');
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['settings', 'u' => $model->urlname]);
+                return $this->redirect(['settings', 'u' => $model->urlname, 'action' => $action]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->render('settings', ['model' => $model, 'licenseItems' => $licenseItems]);
+        return $this->render('settings', [
+            'model' => $model,
+            'licenseItems' => $licenseItems,
+            'action' => $action
+        ]);
     }
 }
