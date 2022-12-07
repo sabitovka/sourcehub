@@ -2,52 +2,37 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+use yii\bootstrap5\Html;
+
 ?>
-<div class="site-index">
-
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+<main class="container">
+    <section>
+        <h1 class="my-5 text-center">Веб-ориентированная информационно-поисковая система свободного программного обеспечения</h1>
+        <form action="#" method="post" class="search my-5 d-flex justify-content-md-center">
+            <div class="form-group col-5">
+                <input type="email" class="form-control" id="sh-search" placeholder="Поиск">
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+        </form>
+    </section>
+    <article class="d-flex justify-content-around text-center my-5">
+        <div class="px-5 w-100">
+            <h4>Прямиком от разработчиков</h4>
+            <div>SoufceHub - ресурс сообщества с открытым исходным кодом, предназначенный для того, чтобы помочь проектам с открытым исходным кодом быть максимально успешными.</div>
+            <button class="btn btn-outline-success mt-2"><?= Html::a('Каталог', 'catalog', ['class' => 'text-decoration-none text-reset']) ?></button>
         </div>
-
-    </div>
-</div>
+        <div class="px-5 w-100">
+            <h4>Оживи свой проект</h4>
+            <div>Наш популярный каталог объединяет почти 30 миллионов посетителей и обслуживает более 2,6 миллионов</div>
+            <button class="btn btn-outline-success mt-2"><?= Html::a('Создать', 'projects/create', ['class' => 'text-decoration-none text-reset']) ?></button>
+        </div>
+    </article>
+    <!-- <section class="mt-5">
+        <h5>Популярные программы</h5>
+        <div class="d-flex align-items-center">
+            <div>Название программы</div>
+            <div>краткое описание</div>
+            <div>Колчество скачиваний: 111</div>
+            <button class="btn btn-outline-success ml-auto">Подробнее</button>
+        </div>
+    </section> -->
+</main>
