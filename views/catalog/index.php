@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /** @var app\models\Project $projects */
 /** @var app\models\Category $categories */
 
-$this->title = $model->name;
+$this->title = "Каталог свободного ПО";
 $this->params['breadcrumbs'][] = ['label' => 'Каталог'];
 \yii\web\YiiAsset::register($this);
 ?>
@@ -55,9 +55,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Каталог'];
             <?php foreach($projects as $project) { ?>
                 <div class="mt-2 d-flex flex-column">
                     <div class="d-flex">
-                        <?=
-                            Html::img(
-                                '@web/upload/projects/'.$project['urlname'].'/logo.png',
+                        <?php
+                            $logoimg = \Yii::getAlias('@webroot') . '/upload/projects/'.$project['urlname'].'/logo';
+                            $filename = file_exists($logoimg) ? '@web/upload/projects/'.$project['urlname'].'/logo' : '@web/img/noimage.jpg';
+                            echo Html::img(
+                                $filename,
                                 [
                                     'alt' => $project['urlname'],
                                     'class' => 'img-responsive',

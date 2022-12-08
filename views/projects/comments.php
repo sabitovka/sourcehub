@@ -20,16 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         <h3 class="text-start p-4">Комментарии</h3>
-    </div>
-
-    <div class="mt-4">
-            <div class="align-items-center d-flex">
-                <h4 class="col">Комментарии</h4>
-                <a href="#" class="col text-end">Смотреть больше</a>
-            </div>
-            <div class="card mt-2 px-2">
+        <div class="mt-4">
                 <div class="col p-1 border-bottom">
-                    <div class="row mt-2">
+                    <div class="mt-2">
                         <div class="col fw-bolder fs-5">sabitov</div>
                         <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
                     </div>
@@ -39,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="col p-1 border-bottom">
-                    <div class="row mt-2">
+                    <div class="mt-2">
                         <div class="col fw-bolder fs-5">sabitov</div>
                         <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
                     </div>
@@ -49,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="col p-1">
-                    <div class="row mt-2">
+                    <div class="mt-2">
                         <div class="col fw-bolder fs-5">sabitov</div>
                         <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
                     </div>
@@ -57,7 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
                     </p>
                 </div>
-            </div>
         </div>
+    </div>
+
 
 </div>

@@ -4,9 +4,12 @@ namespace app\controllers;
 
 use app\models\License;
 use app\models\Project;
+use app\models\UploadForm;
+use app\models\UploadLogoForm;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 class ProjectsController extends Controller
 {
@@ -27,6 +30,9 @@ class ProjectsController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                if (!file_exists('upload/projects/' . $model->urlname)) {
+                    mkdir('upload/projects/' . $model->urlname);   
+                }
                 return $this->redirect(['view', 'u' => $model->urlname]);
             }
         } else {
@@ -40,10 +46,11 @@ class ProjectsController extends Controller
         $model = Project::findOne(['urlname' => $u]);
         $licenses = License::find()->all();
         $licenseItems = ArrayHelper::map($licenses, 'id', 'name');
+        $logoForm = new UploadLogoForm($u);
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['settings', 'u' => $model->urlname, 'action' => $action]);
+            if ($model->load($this->request->post())) {
+                $model->save();
             }
         } else {
             $model->loadDefaultValues();
@@ -52,8 +59,26 @@ class ProjectsController extends Controller
         return $this->render('settings', [
             'model' => $model,
             'licenseItems' => $licenseItems,
-            'action' => $action
+            'action' => $action,
+            'logoFile' => $logoForm,
         ]);
+    }
+
+    public function actionSettingsUploadLogo() {
+        $model = new UploadLogoForm(null);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->file = UploadedFile::getInstance($model, 'file');
+
+            if ($model->file && $model->validate()) {       
+                if (!file_exists('upload/projects/' . $model->urlname)) {
+                    mkdir('upload/projects/' . $model->urlname);   
+                }
+                $model->file->saveAs('upload/projects/' . $model->urlname . '/logo');
+            }
+        }
+
+        return $this->redirect(['settings', 'u' => $model->urlname]);
     }
 
     public function actionFiles($u) {

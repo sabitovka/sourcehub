@@ -17,8 +17,17 @@ use yii\bootstrap5\Html;
 </div>
 <div class="col">
     <div class="float-end d-flex flex-column align-items-center">
-        <div>Логотип проекта</div>
-        <img src="" alt="" width="100" height="100">
+        <div class="text-start">Логотип проекта</div>
+        <!-- <img src="" alt="" width="100" height="100"> -->
+        <?php
+            $form = ActiveForm::begin([
+                'options' => ['enctype' => 'multipart/form-data',],
+                'action' => ['settings-upload-logo'],
+            ]) ?>
+        
+        <?= $form->field($logoFile, 'file')->fileInput() ?>
+        <?= $form->field($logoFile, 'urlname', ['enableLabel' => false])->textInput(['class' => 'd-none']); ?>
         <button class="btn btn-outline-success mt-2">Загрузить</button>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
