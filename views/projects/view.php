@@ -1,6 +1,10 @@
 <?php
 
 /** @var yii\web\View $this */
+
+use yii\bootstrap5\Html;
+use yii\helpers\Url;
+
 /** @var app\models\Platform $model */
 
 $this->title = $model->name;
@@ -13,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_header', ['model' => $model]) ?>
 
     <div class="d-flex align-items-center mt-3">
-        <button class="btn btn-success col-2">Загрузить</button>
+        <?= Html::a('Загрузить', Url::to(['files', 'u' => $model->urlname]), ['class' => 'btn btn-success col-2']) ?>
         <div class="fw-bold fs-5 col text-end"><span>25</span> Загрузок</div>
         <div class="fw-bold fs-5 col text-end">Последнее обновлениие: <span>25.11.2022</span></div>
     </div>
@@ -51,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="mt-4">
             <div class="align-items-center d-flex">
                 <h4 class="col">Комментарии</h4>
-                <a href="#" class="col text-end">Смотреть больше</a>
+                <?= Html::a('Смотреть больше', Url::to(['comments', 'u' => $model->urlname]), ['class' => 'col text-end']) ?>
             </div>
             <div class="card mt-2 px-2">
                 <div class="col p-1 border-bottom">
