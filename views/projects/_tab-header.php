@@ -3,14 +3,14 @@
 use yii\bootstrap5\Html;
 
 function isActiveTab($currentTab, $activeTab) {
-    return ($activeTab == $currentTab ? 'active' : '');
+    return ($activeTab == $currentTab ? ' active' : '');
 }
 
 $TABS = [
-    'view' => 'Общее',
-    'files' => 'Файлы',
-    'comments' => 'Комментарии',
-    'settings' => 'Настройка'
+    'view' => ['Общее'],
+    'files' => ['Файлы'],
+    'comments' => ['Комментарии'],
+    'settings' => ['Настройка', 'active' => Yii::$app->user->isGuest],
 ]
 
 ?>
@@ -19,7 +19,9 @@ $TABS = [
     <ul class="nav nav-tabs card-header-tabs">
         <?php 
             foreach ($TABS as $key => $value) {
-                echo Html::a($value, [$key, 'u' => $model->urlname], ['class' => 'nav-link ' . isActiveTab($key, $activeTab)]);
+                if (!$value['active']) {
+                    echo Html::a($value[0], [$key, 'u' => $model->urlname], ['class' => 'nav-link' . isActiveTab($key, $activeTab)]);
+                }
             }
         ?>
     </ul>   

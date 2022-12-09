@@ -21,6 +21,17 @@ class UploadForm extends Model
     {
         return [
             [['file'], 'file'],
+            [['file'], 'required', 'message' => 'Сначал необходимо выбрать файл'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'file' => 'Новый файл'
         ];
     }
 }

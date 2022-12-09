@@ -46,9 +46,9 @@ class File extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'filename' => 'Filename',
-            'upload_at' => 'Upload At',
-            'name' => 'Name',
+            'filename' => 'Путь файла',
+            'upload_at' => 'Загружен',
+            'name' => 'Название файла',
             'project_id' => 'Project ID',
         ];
     }
@@ -71,5 +71,9 @@ class File extends \yii\db\ActiveRecord
     public function getProject()
     {
         return $this->hasOne(Project::class, ['id' => 'project_id']);
+    }
+
+    public function getFilesByProjectId($projectId) {
+        return $this->find()->where(['project_id' => $projectId])->all();
     }
 }

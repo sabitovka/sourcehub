@@ -41,11 +41,11 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Каталог', 'url' => ['/catalog']],
             ['label' => 'Создать', 'url' => ['/projects/create']],
-            ['label' => 'Справочники', 'items' => [
+            !Yii::$app->user->isGuest ? ['label' => 'Справочники', 'items' => [
                 ['label' => 'Лицензии', 'url' => ['/license/index']],
                 ['label' => 'Платформы', 'url' => ['/platform/index']],
                 ['label' => 'Категории', 'url' => ['/category/index']],
-            ]],
+            ]] : '',
             Yii::$app->user->isGuest ? (
                 ['label' => 'Войти', 'url' => ['/site/login']]
             ) : (

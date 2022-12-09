@@ -43,7 +43,7 @@ $ACTIONS = [
                     ?>
                 </div>
             </div>
-            <?=  $this->render('_settings-'.$action, ['model' => $model, 'licenseItems' => $licenseItems, 'logoFile' => $logoFile]) ?>
+            <?=  $this->render('_settings-'.$action, $_params_) ?>
         </div>
     </div>
 </div>
