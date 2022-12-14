@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "projects".
@@ -139,5 +140,37 @@ class Project extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getDownloads($pStart = "1970-01-01 00:00:01", $pEnd = '2038-01-19 03:14:07') {
+        return Download::find()
+            ->andWhere(['in', 'file_id', $this->getFiles()->select('id')])
+            ->andWhere('downloaded_at between :pStart and :pEnd')
+            ->params([':pStart' => $pStart, ':pEnd' => $pEnd]);
+    }
+
+    public static function getAllProjectsDownloads($pStart = "1970-01-01 00:00:01", $pEnd = '2038-01-19 03:14:07', $limit = 20) {
+        return (new Query())
+            ->select(['{{projects}}.*', 'count({{downloads}}.id) as downloads_count'])
+            ->from(Project::tableName())
+            ->leftJoin(File::tableName(), '{{projects}}.id = files.project_id')
+            ->leftJoin(Download::tableName(), 'files.id = {{downloads}}.file_id')
+            ->where('downloaded_at between :pStart and :pEnd')
+            ->groupBy('{{projects}}.id')
+            ->orderBy('downloads_count DESC')
+            ->params([':pStart' => $pStart, ':pEnd' => $pEnd]);
+    }
+
+    public function getDownloadsCount($pStart = "1970-01-01 00:00:01", $pEnd = '2038-01-19 03:14:07') {
+        return $this->getDownloads($pStart, $pEnd)->count();
+    }
+
+    public function getLastUpdatedDate() {
+        return gmdate('d.m.Y h:m', strtotime($this->getFiles()
+                ->select('{{upload_at}}')
+                ->orderBy('upload_at DESC')
+                ->one()
+                ->upload_at));
+        
     }
 }

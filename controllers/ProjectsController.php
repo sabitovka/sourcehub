@@ -156,4 +156,10 @@ class ProjectsController extends Controller
 
         return $this->render('comments', ['model' => $model]);
     }
+
+    public function actionCountTest($u) {
+        $model = Project::getAllProjectsDownloads()->limit(20)->all();
+        // return $file->getDownloadsCount('2022-12-09 00:00:00', '2022-12-09 23:59:59');
+        return json_encode($model);
+    }
 }

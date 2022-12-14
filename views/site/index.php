@@ -3,6 +3,7 @@
 /** @var yii\web\View $this */
 
 use yii\bootstrap5\Html;
+use yii\widgets\ListView;
 
 ?>
 <main class="container">
@@ -26,13 +27,12 @@ use yii\bootstrap5\Html;
             <button class="btn btn-outline-success mt-2"><?= Html::a('Создать', 'projects/create', ['class' => 'text-decoration-none text-reset']) ?></button>
         </div>
     </article>
-    <!-- <section class="mt-5">
+
+    <section class="mt-5">
         <h5>Популярные программы</h5>
-        <div class="d-flex align-items-center">
-            <div>Название программы</div>
-            <div>краткое описание</div>
-            <div>Колчество скачиваний: 111</div>
-            <button class="btn btn-outline-success ml-auto">Подробнее</button>
-        </div>
-    </section> -->
+        <?= ListView::widget([
+            'dataProvider' => $topDownloadedAP,
+            'itemView' => '_top-downloaded',
+        ]); ?>
+    </section>
 </main>

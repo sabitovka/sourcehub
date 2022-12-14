@@ -32,4 +32,10 @@ class FilesController extends Controller
 
         throw new \yii\web\NotFoundHttpException("Файл {$file->name} не найден!");
     }
+
+    public function actionCountTest($id) {
+        $file = File::find()->where(['id' => $id])->one();
+        // return $file->getDownloadsCount('2022-12-09 00:00:00', '2022-12-09 23:59:59');
+        return $file->getDownloadsCount();
+    }
 }

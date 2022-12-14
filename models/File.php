@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "files".
@@ -75,5 +76,12 @@ class File extends \yii\db\ActiveRecord
 
     public function getFilesByProjectId($projectId) {
         return $this->find()->where(['project_id' => $projectId])->all();
+    }
+
+    public function getDownloadsCount($pStart = "1970-01-01 00:00:01", $pEnd = '2038-01-19 03:14:07') {
+        return $this->getDownloads()
+            ->where('downloaded_at between :pStart and :pEnd')
+            ->params([':pStart' => $pStart, ':pEnd' => $pEnd])
+            ->count();
     }
 }

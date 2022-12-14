@@ -18,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="d-flex align-items-center mt-3">
         <?= Html::a('Загрузить', Url::to(['files', 'u' => $model->urlname]), ['class' => 'btn btn-success col-2']) ?>
-        <div class="fw-bold fs-5 col text-end"><span>25</span> Загрузок</div>
-        <div class="fw-bold fs-5 col text-end">Последнее обновлениие: <span>25.11.2022</span></div>
+        <div class="fw-bold fs-5 col text-end"><span><?= $model->getDownloadsCount() ?></span> Загрузок</div>
+        <div class="fw-bold fs-5 col text-end">Последнее обновлениие: <span><?= $model->getLastUpdatedDate() ?></span></div>
     </div>
 
     <div class="card text-center my-3">

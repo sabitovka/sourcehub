@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Project;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
@@ -61,7 +63,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $top2DownloadedAP = new ActiveDataProvider([
+            'query' => Project::getAllProjectsDownloads()->limit(2),
+        ]);
+        return $this->render('index', ['topDownloadedAP' => $top2DownloadedAP]);
     }
 
     /**
