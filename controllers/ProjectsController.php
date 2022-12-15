@@ -2,17 +2,18 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\File;
 use app\models\License;
 use app\models\Project;
 use app\models\UploadForm;
 use app\models\UploadLogoForm;
-use DateTime;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 
 class ProjectsController extends Controller
@@ -109,6 +110,33 @@ class ProjectsController extends Controller
         ]);
     }
 
+    private function _actionSettingsCategories($model) {
+        $action = 'categories';
+
+        $categoriesProvider = new ActiveDataProvider([
+            'query' => $model->getCategories(),
+        ]);
+        $allCategories = Category::find()->asArray()->all();
+
+        if ($this->request->isPost) {
+            $data = $this->request->post();
+            if ($data['category'] > 0) {
+                $category = Category::findOne(['id' => $data['category']]);
+                $model->link('categories', $category);
+                return $this->redirect(Url::to(['projects/settings', 'u' => $model->urlname, 'action' => $action]));
+            } else {
+                return json_encode(['error' => true, 'message' => 'Не выбрана категория'], JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        return $this->render('settings', [
+            'model' => $model,
+            'categoriesProvider' => $categoriesProvider,
+            'categories' => ArrayHelper::map($allCategories, 'id', 'name'),
+            'action' => $action,
+        ]);
+    }
+
     public function actionSettings($u, $action = 'index') {
         $model = Project::findOne(['urlname' => $u]);
         switch ($action) {
@@ -116,6 +144,8 @@ class ProjectsController extends Controller
                 return $this->_actionSettingsIndex($model);
             case 'files':
                 return $this->_actionSettingsFiles($model);
+            case 'categories':
+                return $this->_actionSettingsCategories($model);
             default:
                 return $this->actionIndex();
         }

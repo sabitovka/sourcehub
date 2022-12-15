@@ -77,9 +77,10 @@ class Project extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
+    public function getCategories()
     {
-        return $this->hasOne(Category::class, ['id' => 'category_id']);
+        return $this->hasMany(Category::class, ['id' => 'categories_id'])
+            ->viaTable('{{projects_categories}}', ['projects_id' => 'id']);
     }
 
     /**
