@@ -29,12 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
 
         <div class="card-body text-start px-3">
-            <div class="fs-5 fw-bolder">Платформа: <span class="link-primary"><?= $model->platform->name ?></span></div>
-            <div class="fs-5 fw-bolder">Категории: <span class="link-primary">
+            <div class="fs-5 fw-bolder">
+                Платформа:
+                <span class="link-primary">
+                    <?= implode(', ', (array_map(function ($array) { return $array['name']; }, $model->getPlatforms()->all()))) ?>
+                </span>
+            </div>
+            <div class="fs-5 fw-bolder">
+                Категории:
+                <span class="link-primary">
                 <?= implode(', ', (array_map(function ($array) {
                     return $array['name'];
                 }, $model->getCategories()->all()))) ?>
-                </span></div>
+                </span>
+            </div>
             <div class="fs-5 fw-bolder">Сайт проекта: <span class="link-primary">urlspce.io</span></div>
             <div class="fs-5 fw-bolder">Лицензия: <span class="link-primary"><?= $model->license->name ?></span></div>
             <div class="mt-3"><p class="fw-normal"><?= $model->description ?></p></div>

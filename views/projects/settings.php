@@ -16,6 +16,7 @@ $ACTIONS = [
     'index' => 'Проект',
     'screenshots' => 'Скриншоты',
     'categories' => 'Категории',
+    'platforms' => 'Платформы',
     'files' => 'Файлы'
 ]
 ?>

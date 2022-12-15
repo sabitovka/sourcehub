@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Category;
 use app\models\File;
 use app\models\License;
+use app\models\Platform;
 use app\models\Project;
 use app\models\UploadForm;
 use app\models\UploadLogoForm;
@@ -137,6 +138,33 @@ class ProjectsController extends Controller
         ]);
     }
 
+    public function _actionSettingsPlatforms($model) {
+        $action = 'platforms';
+
+        $platformsProvider = new ActiveDataProvider([
+            'query' => $model->getPlatforms(),
+        ]);
+        $platforms = Platform::find()->asArray()->all();
+
+        if ($this->request->isPost) {
+            $data = $this->request->post();
+            if ($data['platform'] > 0) {
+                $platform = Platform::findOne(['id' => $data['platform']]);
+                $model->link('platforms', $platform);
+                return $this->redirect(Url::to(['projects/settings', 'u' => $model->urlname, 'action' => $action]));
+            } else {
+                return json_encode(['error' => true, 'message' => 'Не выбрана категория'], JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        return $this->render('settings', [
+            'model' => $model,
+            'platformsProvider' => $platformsProvider,
+            'platforms' => ArrayHelper::map($platforms, 'id', 'name'),
+            'action' => $action,
+        ]);
+    }
+
     public function actionSettings($u, $action = 'index') {
         $model = Project::findOne(['urlname' => $u]);
         switch ($action) {
@@ -146,6 +174,8 @@ class ProjectsController extends Controller
                 return $this->_actionSettingsFiles($model);
             case 'categories':
                 return $this->_actionSettingsCategories($model);
+            case 'platforms':
+                return $this->_actionSettingsPlatforms($model);
             default:
                 return $this->actionIndex();
         }

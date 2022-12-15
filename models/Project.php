@@ -118,9 +118,10 @@ class Project extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPlatform()
+    public function getPlatforms()
     {
-        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
+        return $this->hasMany(Platform::class, ['id' => 'categories_id'])
+            ->viaTable('{{projects_categories}}', ['projects_id' => 'id']);
     }
 
     /**
