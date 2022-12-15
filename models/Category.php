@@ -50,6 +50,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getProjects()
     {
-        return $this->hasMany(Project::class, ['category_id' => 'id']);
+        return $this->hasMany(Project::class, ['id' => 'projects_id'])
+            ->viaTable('{{projects_categories}}', ['categories_id' => 'id']);
     }
 }

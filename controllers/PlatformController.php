@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Platform;
 use app\models\PlatformSearch;
+use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -55,8 +56,14 @@ class PlatformController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $projectsDataProvider = new ArrayDataProvider([
+            'allModels' => $model->getProjects()->all(),
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'projectsDataProvider' => $projectsDataProvider,
         ]);
     }
 

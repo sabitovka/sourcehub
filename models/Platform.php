@@ -50,6 +50,7 @@ class Platform extends \yii\db\ActiveRecord
      */
     public function getProjects()
     {
-        return $this->hasMany(Project::class, ['platform_id' => 'id']);
+        return $this->hasMany(Project::class, ['id' => 'projects_id'])
+            ->viaTable('{{projects_platforms}}', ['platforms_id' => 'id']);
     }
 }

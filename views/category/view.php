@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,6 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
         ],
+    ]) ?>
+
+    <?= Html::label('Проекты этой категории') ?>
+    <?= GridView::widget([
+        'dataProvider' => $projectsDataProvider,
+        'columns' => [
+            'name',
+            'urlname',
+            'short_description',
+        ]
     ]) ?>
 
 </div>
