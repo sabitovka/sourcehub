@@ -9,6 +9,7 @@ use app\models\Platform;
 use app\models\Project;
 use app\models\UploadForm;
 use app\models\UploadLogoForm;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -198,17 +199,60 @@ class ProjectsController extends Controller
         return $this->redirect(['settings', 'u' => $model->urlname]);
     }
 
+    private function getFilesStatistics($model) {
+        $sql = "SELECT 
+            DATE(NOW() - INTERVAL l.day DAY) AS day,
+            COALESCE(d.`count`, 0) AS views
+        FROM last_days AS l
+        LEFT JOIN (SELECT
+                DATE(DATE_FORMAT(downloaded_at, '%Y-%m-%d')) AS df,
+                COUNT(id) as `count`
+            FROM `downloads`
+            WHERE file_id = :fileid
+            GROUP BY df) as d
+        ON DATE(NOW() - INTERVAL l.day DAY) = d.df
+        group BY DATE(NOW() - INTERVAL l.day DAY)
+        ORDER BY `day` DESC;";
+
+        $files = $model->getFiles()->all();
+        $data = [];
+        foreach ($files as $file) {
+            $rawdata = Yii::$app->db
+                ->createCommand($sql)
+                ->bindParam(':fileid', $file->id)
+                ->queryAll();
+            $data['labels'] = ArrayHelper::getColumn($rawdata, 'day');
+            $data['views'][] = ['data' => ArrayHelper::getColumn($rawdata, 'views')];
+        }
+
+        return $data;
+    }
+
     public function actionFiles($u) {
         $model = Project::findOne(['urlname' => $u]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => File::find()->where(['project_id' => $model->id]),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
+        $params = [];
 
+        if (Yii::$app->user->isGuest) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => File::find()->where(['project_id' => $model->id]),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+            $params = [
+                'dataProvider' => $dataProvider
+            ];
+        } else {
+            $data = $this->getFilesStatistics($model);
 
-        return $this->render('files', ['model' => $model, 'dataProvider' => $dataProvider]);
+            $params = [
+                'data' => $data
+            ];
+        }
+        
+        return $this->render('files', [
+            'model' => $model,
+        ] + $params);
     }
 
     public function actionComments($u) {

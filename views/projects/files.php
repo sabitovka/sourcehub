@@ -1,11 +1,5 @@
 <?php
 
-/** @var yii\web\View $this */
-
-use yii\bootstrap5\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
-
 /** @var app\models\Platform $model */
 
 $this->title = $model->name;
@@ -17,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="align-items-center">
     <?= $this->render('_header', ['model' => $model]) ?>
 
-    <div class="card text-center my-3">
+    <div class="card my-3">
         <?= $this->render('_tab-header', [
             'activeTab' => 'files',
             'model' => $model,
@@ -26,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <h3 class="text-start px-4 pt-4">Файлы</h3>
 
-        <?= Yii::$app->user->isGuest ? $this->render('_files-guest', $_params_) : 'Admin' ?>
+        <?= Yii::$app->user->isGuest ? $this->render('_files-guest', $_params_) : $this->render('_files-admin', $_params_) ?>
     </div>
 
     <div class="mt-4">
