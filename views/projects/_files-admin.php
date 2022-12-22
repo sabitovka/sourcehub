@@ -9,14 +9,16 @@ AppAsset::register($this);
 ?>
 
 <div class="p-4">
-    <h5>Количество загрузок файлов</h5>
+    <h5>Количество загрузок файлов проекта</h5>
     <?= ChartJs::widget([
         'type' => ChartJs::TYPE_LINE,
         'data' => [ 
             'labels' => $data['labels'],
             'datasets' => [
-                $data['views'][1],
-                $data['views'][0],
+                [
+                    'data' => $data['views'],
+                    'label' => 'Количество загрузок',
+                ],
             ],
             ],
         ]

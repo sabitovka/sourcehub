@@ -206,24 +206,25 @@ class ProjectsController extends Controller
         FROM last_days AS l
         LEFT JOIN (SELECT
                 DATE(DATE_FORMAT(downloaded_at, '%Y-%m-%d')) AS df,
-                COUNT(id) as `count`
-            FROM `downloads`
-            WHERE file_id = :fileid
+                COUNT(`ds`.id) as `count`
+            FROM
+                `downloads` as ds
+                LEFT JOIN `files` as f
+                    ON f.`id` = ds.`file_id`
+            WHERE f.`project_id` = :projectId
             GROUP BY df) as d
         ON DATE(NOW() - INTERVAL l.day DAY) = d.df
         group BY DATE(NOW() - INTERVAL l.day DAY)
-        ORDER BY `day` DESC;";
+        ORDER BY `day` ASC;";
 
-        $files = $model->getFiles()->all();
+        $rawdata = Yii::$app->db
+            ->createCommand($sql)
+            ->bindParam(':projectId', $model->id)
+            ->queryAll();
+
         $data = [];
-        foreach ($files as $file) {
-            $rawdata = Yii::$app->db
-                ->createCommand($sql)
-                ->bindParam(':fileid', $file->id)
-                ->queryAll();
-            $data['labels'] = ArrayHelper::getColumn($rawdata, 'day');
-            $data['views'][] = ['data' => ArrayHelper::getColumn($rawdata, 'views')];
-        }
+        $data['labels'] = ArrayHelper::getColumn($rawdata, 'day');
+        $data['views'] = ArrayHelper::getColumn($rawdata, 'views');
 
         return $data;
     }
