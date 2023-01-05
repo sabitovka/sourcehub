@@ -124,18 +124,4 @@ class m221109_115926_create_files_screenshots_downloads_comments_tables extends 
         $this->dropTable(T_SCREENSHOTS);
     }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m221109_115926_create_files_screenshots_downloads_comments_tables cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
