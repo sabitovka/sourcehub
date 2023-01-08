@@ -15,7 +15,6 @@ use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 
 class ProjectsController extends Controller
@@ -33,6 +32,10 @@ class ProjectsController extends Controller
     }
 
     public function actionCreate() {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(Url::to(['./site/login']));
+        }
+
         $model = new Project();
 
         if ($this->request->isPost) {

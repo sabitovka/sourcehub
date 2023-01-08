@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\RegisterForm;
 use app\models\ContactForm;
 use app\models\Project;
 use yii\data\ActiveDataProvider;
@@ -87,6 +88,21 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionRegister() {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegisterForm();
+        if ($this->request->isPost && $model->load(Yii::$app->request->post())) {
+            return json_encode($model->register());
+        }
+
+        return $this->render('register', [
             'model' => $model,
         ]);
     }

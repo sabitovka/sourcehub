@@ -2,14 +2,10 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+use yii\db\ActiveRecord;
 
+class User extends ActiveRecord implements \yii\web\IdentityInterface
+{
     private static $users = [
         '100' => [
             'id' => '100',
@@ -27,13 +23,27 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         ],
     ];
 
+     /**
+     * @return array the validation rules.
+     */
+    public function rules()
+    {
+        return [
+            // username and password are both required
+            [['username', 'password'], 'required'],
+        ];
+    }
+
+    public static function tableName() {
+        return '{{users}}';
+    }
 
     /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : static::findOne($id);
     }
 
     /**
@@ -47,7 +57,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             }
         }
 
-        return null;
+        return static::findOne(['access_token' => $token]);;
     }
 
     /**
@@ -64,7 +74,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             }
         }
 
-        return null;
+        return static::findOne(['username' => $username]);;
     }
 
     /**
@@ -100,5 +110,16 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->authKey = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
     }
 }
