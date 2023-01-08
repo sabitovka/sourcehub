@@ -18,6 +18,6 @@ use yii\bootstrap5\Html;
     <div class="project-head__title ms-3">
         <h3 class="mb-0"><?= $this->title ?></h3>
         <div><?= $model->short_description ?></div>
-        <div class="mt-3">Поделился с тобой: <span><a href="#" class="link-primary">$model->user->username</a></span></div>
+        <div class="mt-3">Поделился с тобой: <span><a href="#" class="link-primary"><?= $model->user->username ?></a></span></div>
     </div>
 </div>

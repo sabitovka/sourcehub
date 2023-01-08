@@ -10,7 +10,7 @@ $TABS = [
     'view' => ['Общее'],
     'files' => ['Файлы'],
     'comments' => ['Комментарии'],
-    'settings' => ['Настройка', 'active' => Yii::$app->user->isGuest],
+    'settings' => ['Настройка', 'active' => Yii::$app->user->id != $model->user->id],
 ]
 
 ?>

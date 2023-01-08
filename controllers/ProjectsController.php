@@ -12,14 +12,32 @@ use app\models\UploadLogoForm;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class ProjectsController extends Controller
 {
 
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['settings', 'create'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['settings', 'create'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+    
     public function actionIndex() {
         return $this->redirect(Url::to(['/catalog']));
     }
@@ -37,6 +55,7 @@ class ProjectsController extends Controller
         }
 
         $model = new Project();
+        $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -171,6 +190,12 @@ class ProjectsController extends Controller
 
     public function actionSettings($u, $action = 'index') {
         $model = Project::findOne(['urlname' => $u]);
+
+        $userId = Yii::$app->user->id;
+        if ($model->user_id != $userId) {
+            throw new NotFoundHttpException('Страница не найдена');
+        }
+
         switch ($action) {
             case 'index':
                 return $this->_actionSettingsIndex($model);
@@ -203,6 +228,8 @@ class ProjectsController extends Controller
     }
 
     private function getFilesStatistics($model) {
+        Yii::$app->db->createCommand("Set sql_mode='';")->execute();
+
         $sql = "SELECT 
             DATE(NOW() - INTERVAL l.day DAY) AS day,
             COALESCE(d.`count`, 0) AS views

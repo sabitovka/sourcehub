@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\License;
 use app\models\LicenseSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +28,15 @@ class LicenseController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@']
+                        ]
+                    ]
+                ]
             ]
         );
     }
