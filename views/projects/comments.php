@@ -1,6 +1,10 @@
 <?php
 
 /** @var yii\web\View $this */
+
+use yii\bootstrap5\Modal;
+use yii\widgets\ListView;
+
 /** @var app\models\Platform $model */
 
 $this->title = $model->name;
@@ -12,46 +16,54 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="align-items-center">
     <?= $this->render('_header', ['model' => $model]) ?>
 
-    <div class="card text-center my-3">
+    <div class="card my-3">
         <?= $this->render('_tab-header', [
             'activeTab' => 'comments',
             'model' => $model,
         ]) ?>
 
-
-        <h3 class="text-start p-4">Комментарии</h3>
-        <div class="mt-4">
-                <div class="col p-1 border-bottom">
-                    <div class="mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
+        <div class="p-4">
+            <h3 class="text-start">Комментарии</h3>
+            <?php
+            Modal::begin([
+                'title' => '<h4>Добавьте комментарий</h4>',
+                'toggleButton' => [
+                    'label' => 'Добавить комментарий',
+                    'class' => 'btn btn-outline-success' . (Yii::$app->user->isGuest ? ' d-none' : ''),
+                ],
+            ]); ?>
+            <form id="comment-form">
+                <div class="mb-3">
+                    <label for="commentTextArea" class="form-label">Ваш комментарий</label>
+                    <textarea class="form-control" id="commentTextArea" rows="5"></textarea>
                 </div>
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </form>
+            <?php Modal::end(); ?>
+        </div>
 
-                <div class="col p-1 border-bottom">
-                    <div class="mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
-                </div>
-
-                <div class="col p-1">
-                    <div class="mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
-                </div>
+        <div class="mt-4 px-2">
+            <?= ListView::widget([
+                'dataProvider' => $commentsProvider,
+                'itemView' => '_comment',
+            ]); ?>
         </div>
     </div>
 
-
 </div>
+
+<? $js = <<<JS
+    $('form#comment-form').on('submit', (e) => {
+        e.preventDefault();
+        const textArea = $('#commentTextArea');
+        $.ajax({
+            type: 'POST',
+            data: {
+                procedure: 'append',
+                'text': textArea.val()
+            }
+        });
+    })
+JS;
+
+$this->registerJs($js, $this::POS_READY);

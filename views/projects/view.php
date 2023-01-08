@@ -4,6 +4,7 @@
 
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
+use yii\widgets\ListView;
 
 /** @var app\models\Platform $model */
 
@@ -70,34 +71,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('Смотреть больше', Url::to(['comments', 'u' => $model->urlname]), ['class' => 'col text-end']) ?>
             </div>
             <div class="card mt-2 px-2">
-                <div class="col p-1 border-bottom">
-                    <div class="row mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
-                </div>
-
-                <div class="col p-1 border-bottom">
-                    <div class="row mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
-                </div>
-
-                <div class="col p-1">
-                    <div class="row mt-2">
-                        <div class="col fw-bolder fs-5">sabitov</div>
-                        <div class="col text-end text-muted">Добавлено: 03.09.2022</div>
-                    </div>
-                    <p class="mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, explicabo suscipit soluta dolorum delectus atque? Molestiae vel dolore ad temporibus, quos ex similique fugiat voluptatem nobis repellat excepturi laudantium eius?
-                    </p>
+                <div class="mt-4">
+                    <?= ListView::widget([
+                        'dataProvider' => $commentsProvider,
+                        'itemView' => '_comment',
+                    ]); ?>
                 </div>
             </div>
         </div>

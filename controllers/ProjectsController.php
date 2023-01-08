@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\Comment;
 use app\models\File;
 use app\models\License;
 use app\models\Platform;
@@ -11,6 +12,7 @@ use app\models\UploadForm;
 use app\models\UploadLogoForm;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\Expression;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -44,8 +46,14 @@ class ProjectsController extends Controller
 
     public function actionView($u) {
         $model = Project::findOne(['urlname' => $u]);
+
+        $commentsProvider = new ArrayDataProvider([
+            'allModels' => Comment::find()->where(['project_id' => $model->id])->limit(3)->all(),
+        ]);
+
         return $this->render('view', [
-            'model' => $model
+            'model' => $model,
+            'commentsProvider' => $commentsProvider
         ]);
     }
 
@@ -112,7 +120,7 @@ class ProjectsController extends Controller
             $uploadForm->file = UploadedFile::getInstance($uploadForm, 'file');
 
             if ($uploadForm->file && $uploadForm->validate()) {
-                $path = 'upload/projects/' . $model->urlname . '/files//' . $uploadForm->file->baseName . '.' . $uploadForm->file->extension;
+                $path = 'upload/projects/' . $model->urlname . '/files\/' . $uploadForm->file->baseName . '.' . $uploadForm->file->extension;
                 $saved = $uploadForm->file->saveAs($path);
                 if ($saved) {
                     $newFile = new File();
@@ -289,7 +297,25 @@ class ProjectsController extends Controller
     public function actionComments($u) {
         $model = Project::findOne(['urlname' => $u]);
 
-        return $this->render('comments', ['model' => $model]);
+        if ($this->request->isPost && Yii::$app->user->id != null) {
+            $data = $this->request->post();
+            if (strcmp($data['text'], '') != 0) {
+                $comment = new Comment();
+                $comment->user_id = Yii::$app->user->id;
+                $comment->text = $data['text'];
+                $comment->project_id = $model->id;
+                $comment->save();
+                return $this->redirect(Url::to(['projects/comments', 'u' => $model->urlname]));
+            } else {
+                return json_encode(['error' => true, 'message' => 'Не ввели комментарий, пришло: ' . $data['text']], JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        $commentsProvider = new ActiveDataProvider([
+            'query' => Comment::find(['project_id' => $model->id]),
+        ]);
+
+        return $this->render('comments', ['model' => $model, 'commentsProvider' => $commentsProvider]);
     }
 
     public function actionCountTest($u) {
