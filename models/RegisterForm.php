@@ -15,6 +15,7 @@ class RegisterForm extends Model
 {
     public $username;
     public $password;
+    public $repeatPassword;
 
     /**
      * @return array the validation rules.
@@ -23,7 +24,9 @@ class RegisterForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['username', 'password', 'repeatPassword'], 'required'],
+            [['repeatPassword', 'password'], 'validateRepeatPassword'],
+            ['username', 'validateUserExists']
         ];
     }
 
@@ -32,6 +35,7 @@ class RegisterForm extends Model
         return [
             'username' => 'Имя пользователя',
             'password' => 'Пароль',
+            'repeatPassword' => 'Повторите пароль',
         ];
     }
 
@@ -45,9 +49,27 @@ class RegisterForm extends Model
             $user = new User();
             $user['username'] = $this->username;
             $user->password = $this->password;
-            $user->save();
-            return $user;
+            //$user->save();
+            return true;
         }
         return false;
+    }
+
+    public function validateRepeatPassword($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if ($this->password != $this->repeatPassword) {
+                $this->addError($attribute, 'Пароли не совпадают');
+            }
+        }
+    }
+
+    public function validateUserExists($attribute, $params) {
+        if (!$this->hasErrors()) {
+            $candidate = User::findByUsername($this->username);
+            if ($candidate != null) {
+                $this->addError($attribute, 'Пользователь уже существует');
+            }
+        }
     }
 }

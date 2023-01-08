@@ -98,8 +98,8 @@ class SiteController extends Controller
         }
 
         $model = new RegisterForm();
-        if ($this->request->isPost && $model->load(Yii::$app->request->post())) {
-            return json_encode($model->register());
+        if ($this->request->isPost && $model->load(Yii::$app->request->post()) && $model->register()) {
+            return $this->goHome();
         }
 
         return $this->render('register', [

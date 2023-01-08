@@ -22,7 +22,7 @@ class m230106_125319_create_users_table extends Migration
             'username' => $this->string(),
             'password' => $this->string(),
             'authKey' => $this->string(),
-            'accessKey' => $this->string()
+            'accessToken' => $this->string()
         ]);
 
         $this->addForeignKey(
