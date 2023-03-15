@@ -5,8 +5,7 @@
     <a href="http://asu-cs.donntu.ru/" target="_blank">
         <img src="http://asu-cs.donntu.ru/sites/default/files/22222_1.png" height="150px">
     </a>
-    <h1 align="center">Donetsk National Technical University</h1>
-    <h2 align="center">Department of Automated Control Systems</h2>
+    <h2 align="center">Donetsk National Technical University / Department of Automated Control Systems</h2>
     <br>
 </p>
 
